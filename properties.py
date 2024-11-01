@@ -24,6 +24,20 @@ directions_dict = {
 }
 
 
+def add_key(obj, bone, frame):
+    datapath = bone.path_from_id()
+    obj.keyframe_insert(data_path=f"{datapath}.location", frame=frame, group=bone.name, keytype='GENERATED')
+
+    if bone.rotation_mode == 'QUATERNION':
+        obj.keyframe_insert(data_path=f"{datapath}.rotation_quaternion", frame=frame, group=bone.name, keytype='GENERATED')
+    elif bone.rotation_mode == 'AXIS_ANGLE':
+        obj.keyframe_insert(data_path=f"{datapath}.rotation_axis_angle", frame=frame, group=bone.name, keytype='GENERATED')
+    else:
+        obj.keyframe_insert(data_path=f"{datapath}.rotation_euler", frame=frame, group=bone.name, keytype='GENERATED')
+    
+    obj.keyframe_insert(data_path=f"{datapath}.scale", frame=frame, group=bone.name, keytype='GENERATED')
+
+
 def set_prop_value(obj, path, value):
     prop = obj.path_resolve(path, False).data
     paths = [x for x in re.split('\.|\[|\]', path) if x]
@@ -451,11 +465,7 @@ class EnumSpaceSwitchProperties(CollectionPropertyGrouphBase, SpaceSwitchBase, P
                 self.parent.set_prop_value(self.parent.prop_value, set_key=True, frame=frame_num - 1)
 
                 for bone in [obj.pose.bones[x.name] for x in self.bones]:
-                    datapath = bone.path_from_id()
-                    obj.keyframe_insert(data_path=f"{datapath}.location", index=-1, frame=frame_num - 1, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.rotation_quaternion", index=-1, frame=frame_num - 1, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.rotation_euler", index=-1, frame=frame_num - 1, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.scale", index=-1, frame=frame_num - 1, group=bone.name, keytype='GENERATED')
+                    add_key(obj, bone, frame_num - 1)
 
                 self.parent.set_prop_value(int(self.set_space), set_key=True, frame=frame_num)
             else:
@@ -477,11 +487,7 @@ class EnumSpaceSwitchProperties(CollectionPropertyGrouphBase, SpaceSwitchBase, P
             if bpy.context.scene.tool_settings.use_keyframe_insert_auto:
 
                 for x in [obj.pose.bones[x.name] for x in self.bones]:
-                    datapath = x.path_from_id()
-                    obj.keyframe_insert(data_path=f"{datapath}.location", index=-1, frame=frame_num, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.rotation_quaternion", index=-1, frame=frame_num, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.rotation_euler", index=-1, frame=frame_num, group=bone.name, keytype='GENERATED')
-                    obj.keyframe_insert(data_path=f"{datapath}.scale", index=-1, frame=frame_num, group=bone.name, keytype='GENERATED')
+                    add_key(obj, bone, frame_num)
                 
         self['set_space'] = 0
 
