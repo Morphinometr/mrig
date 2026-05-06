@@ -256,12 +256,18 @@ class BonePairProperties(CollectionPropertyGrouphBase, SpaceSwitchBase, Property
                 if ks and ks.active and active_obj.data.space_switcher.use_active_keyset:
                     bpy.ops.pose.select_all(action='DESELECT')
                     for x in old_sel_bones:
-                        x.bone.select = True
+                        if bpy.app.version < (5,1,0):
+                            x.bone.select = True
+                        else:
+                            x.select =True
                     bpy.ops.anim.keyframe_insert_menu(type=ks.active)
                 else:
                     for x in old_sel_bones:
                         bpy.ops.pose.select_all(action='DESELECT')
-                        x.bone.select = True
+                        if bpy.app.version < (5,1,0):
+                            x.bone.select = True
+                        else:
+                            x.select =True
                         key_channels = keying_dict[x]
                         if 'ROT' in key_channels:
                             bpy.ops.anim.keyframe_insert_menu(type='Rotation')
@@ -304,12 +310,18 @@ class BonePairProperties(CollectionPropertyGrouphBase, SpaceSwitchBase, Property
                 if ks and ks.active and active_obj.data.space_switcher.use_active_keyset:
                     bpy.ops.pose.select_all(action='DESELECT')
                     for x in new_sel_bones:
-                        x.bone.select = True
+                        if bpy.app.version < (5,1,0):
+                            x.bone.select = True
+                        else:
+                            x.select =True
                     bpy.ops.anim.keyframe_insert_menu(type=ks.active)
                 else:
                     for x in new_sel_bones:
                         bpy.ops.pose.select_all(action='DESELECT')
-                        x.bone.select = True
+                        if bpy.app.version < (5,1,0):
+                            x.bone.select = True
+                        else:
+                            x.select =True
                         key_channels = keying_dict[x]
                         if 'ROT' in key_channels:
                             bpy.ops.anim.keyframe_insert_menu(type='Rotation')
@@ -323,7 +335,10 @@ class BonePairProperties(CollectionPropertyGrouphBase, SpaceSwitchBase, Property
 
         bpy.ops.pose.select_all(action='DESELECT')
         for x in new_sel_bones:
-            x.bone.select = True
+            if bpy.app.version < (5,1,0):
+                x.bone.select = True
+            else:
+                x.select =True
             active_obj.data.bones.active = x.bone
 
     def remove_hide_drivers(self, context):
