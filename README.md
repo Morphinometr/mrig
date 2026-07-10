@@ -1,3 +1,4 @@
+# Fork Space Switcher for modern Blender
 # Space Switcher
 
 This addon is targeted to riggers that want to implement an easier and more user-friendly IK/FK switch for animators.
