@@ -1,4 +1,5 @@
-# Fork Space Switcher for modern Blender
+# Fork of 'Space Switcher' by Aquatic Nightmare for modern Blender
+https://gitlab.com/AquaticNightmare/space_switcher
 # Space Switcher
 
 This addon is targeted to riggers that want to implement an easier and more user-friendly IK/FK switch for animators.
